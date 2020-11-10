@@ -66,7 +66,7 @@ public class GameEventListener : MonoBehaviour
 
 #### マルチシーンを使用した場合のデフォルトイベントの動き
 
-![エディター](https://github.com/kazu1184/MultiSceneEvent/blob/images/images/DefalutEvent.gif?raw=true "デフォルトイベント")
+<img src="https://github.com/kazu1184/MultiSceneEvent/blob/images/images/DefalutEvent.gif?raw=true" width="500px">
 
 このように、マルチシーンを使用すると別シーンのオブジェクトがアタッチできない。
 せっかくのイベントの良さが使いきれない。
@@ -140,12 +140,42 @@ public class GameEventListener : MonoBehaviour
 2. **GameEventListenerのリスト** へ **OnEventRaised()** 呼ばれる
 3. イベントの発行
 
-## エディター上での動き
+##### イベント作成
 
-1. todo:イベントの作成
-2. todo:ゲームlistenerのアタッチ
-3. イベントの設定
-4. イベントの呼び出し
+ <img src="https://github.com/kazu1184/MultiSceneEvent/blob/images/images/MakeEvent.gif?raw=true" width="500px">
+
+##### イベントリスナーのアタッチ
+
+<img src="https://github.com/kazu1184/MultiSceneEvent/blob/images/images/AddGameEventlistener.gif?raw=true" width="500px">
+
+##### イベントの設定
+
+<img src="https://github.com/kazu1184/MultiSceneEvent/blob/images/images/SetEvent.gif?raw=true" width="500px">
+
+##### イベントの呼び出し
+
+```c#
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField, Header("プレイヤーステータス")]
+    private StatusParam playerStatus = null;
+    [SerializeField, Header("プレイヤー死亡イベント")]
+    private GameEvent gameEvent = null;
+
+    void Start()
+    {
+        // 値の変更イベント
+        playerStatus.hp.mChanged += (data) =>
+        {
+            if (data <= 0)
+            {
+                // イベント呼び出し
+                gameEvent.Raise();
+            }
+        };
+    }
+}
+```
 
 上記の問題点である同じシーンでしかイベントを配置できない問題だが、ScriptableObjectが管理することによって
 **スクリプトインスタンスから独立している**特徴を活かしマルチシーンでのイベント管理を有効にできた。
