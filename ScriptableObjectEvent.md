@@ -7,7 +7,7 @@
 3. データが一つなので、メモリの節約につながる
 4. エディター上から数値を変更できる
 
-![エディター](https://github.com/kazu1184/MultiSceneEnding/blob/images/images/ScriptableObject.PNG?raw=true "プレイヤーステータス")
+![エディター](https://github.com/kazu1184/MultiSceneEvent/blob/images/images/ScriptableObjec.PNG?raw=true "プレイヤーステータス")
 
 今回はこの**ScriptableObject**をデータとして扱うのではなく、1のスクリプトインスタンスから
 独立しているという点を利用したEvent管理についてまとめていく
@@ -18,7 +18,7 @@
 呼んでくれる機能である。プレイヤー死亡時にアニメーションやエフェクト・敵の挙動
 ステートマシーンへのシーン遷移など複数のクラスに影響を与える時などすごく便利である。
 
-####　イベント通知側
+#### イベント通知側
 
 ```c#
 using UnityEngine;
@@ -64,9 +64,9 @@ public class GameEventListener : MonoBehaviour
 大規模になるにつれて複数のシーンでの作業を採用した場合エディター上でアタッチができずに
 スクリプトから設定したりシングルトンパターンのマネージャーが必要となってしまう。
 
-####　マルチシーンを使用した場合のデフォルトイベントの動き
+#### マルチシーンを使用した場合のデフォルトイベントの動き
 
-![エディター](https://github.com/kazu1184/MultiSceneEnding/blob/images/images/DefalutEvent.gif?raw=true "デフォルトイベント")
+![エディター](https://github.com/kazu1184/MultiSceneEvent/blob/images/images/DefalutEvent.gif?raw=true "デフォルトイベント")
 
 このように、マルチシーンを使用すると別シーンのオブジェクトがアタッチできない。
 せっかくのイベントの良さが使いきれない。
@@ -79,7 +79,7 @@ public class GameEventListener : MonoBehaviour
 1. ScriptableObjectを継承したGameEventクラス
 2. MonoBehaviourを継承したGameEventListenerクラス
 
-####　**[コード例]** GameEvent ScriptableObject
+#### **[コード例]** GameEvent ScriptableObject
 
 ```c#
 [CreateAssetMenu]
@@ -105,7 +105,7 @@ public class GameEvent : ScriptableObject
 }
 ```
 
-####　**[コード例]** GameEventListener
+#### **[コード例]** GameEventListener
 
 ```c#
 using UnityEngine;
@@ -134,10 +134,29 @@ public class GameEventListener : MonoBehaviour
 }
 ```
 
-####　イベントの流れ
+#### イベントの流れ
 
 1. **GameEvent** から **Raise()** が呼ばれる
 2. **GameEventListenerのリスト** へ **OnEventRaised()** 呼ばれる
 3. イベントの発行
 
 ## エディター上での動き
+
+1. todo:イベントの作成
+2. todo:ゲームlistenerのアタッチ
+3. イベントの設定
+4. イベントの呼び出し
+
+上記の問題点である同じシーンでしかイベントを配置できない問題だが、ScriptableObjectが管理することによって
+**スクリプトインスタンスから独立している**特徴を活かしマルチシーンでのイベント管理を有効にできた。
+
+## まとめ
+
+今回のScriptableObjectの使用方法は正直作っていて驚いた。なぜなら、ScriptableObject＝データとして
+扱うといった固定概念があったため、ScriptableObjectにコードを書き込みまるで、シングルトンパターンの
+マネージャーのような扱い方ができることが衝撃的だった。また、個人的に好きだった点としてイベントの作成が
+視覚的でわかりやすい点だ。イベント管理というと便利だが、作っているときにややこしい所があるがこの方法は
+イベントを作成→購読者にアタッチ→関数の登録といった誰にでも理解できるところがいい点だと感じた。
+
+[今回のプロジェクト](https://github.com/kazu1184/MultiSceneEvent)
+[参考サイト](https://unity.com/ja/how-to/architect-game-code-scriptable-objects)
